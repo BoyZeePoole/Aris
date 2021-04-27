@@ -22,6 +22,9 @@ namespace Aris.ServerTest.Controllers
         {
             var viewModel = new ViewModels.GamesListViewModel();
             var games = await _gameService.GetGamesAsync(GetAuthToken(), returnUrl);
+            var cats = games.Select(c => c.Category).Distinct();
+
+            viewModel.Categories = cats;
 
             if(catFilter != null)
             {

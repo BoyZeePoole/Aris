@@ -13,7 +13,7 @@
     <div class="col-12 col-sm-8">
         <form id="filter-form" asp-controller="Home" asp-action="Index" method="post" class="form-inline float-right">
             @{
-                var catSelect = Model.Games.Select(x => x.Category).Distinct().ToList();
+                //var catSelect = Model.Games.Select(x => x.Category).Distinct().ToList();
 
             }
 
@@ -21,7 +21,7 @@
                 <label class="my-1 mr-2" for="category-filter">Category</label>
                 <select id="catFilter" name="catFilter" class="custom-select"  onchange="this.form.submit()">
                     <option value="Please select"></option>
-                    @foreach (var cat in catSelect)
+                    @foreach (var cat in Model.Categories)
                     {
                         <option value="@cat">@cat</option>
                     }
@@ -83,7 +83,7 @@
                         <span class="badge diamond-medal">*</span>
                     }
 
-                    (<a class="info-link" href="#" data-url="Home/Details?game=@game.Base64GameLink">Info</a>)
+                    (<a class="info-link" href="#" onclick="infoLink('/Home/Details?game=@game.Base64GameLink')" data-url="Home/Details?game=@game.Base64GameLink">Info</a>)
                 </td>
                 <td>@game.Category</td>
                 <td>@game.Provider</td>
@@ -96,6 +96,24 @@
     </table>
 
 </div>
+<script>
+    
+    const infoLink = async (url) => {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const myJson = await response.json();
+        let message = "";
+        for (var propt in myJson) {
+            message += propt + ': ' + myJson[propt] + '\r\n';
+        }
+
+        alert(message);        
+    }   
+</script>
 
 @section Scripts {
     <script src="~/js/games.js"></script>

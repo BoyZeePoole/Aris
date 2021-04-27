@@ -42,9 +42,7 @@ namespace Aris.ServerTest.Services
             var games = JsonConvert.DeserializeObject<KoreGames>(data);
 
             return games.Games.OrderBy(c => c.Category).ThenBy(p => p.Platform).ThenBy(n => n.Name).ToList();
-                                 
 
-            //return games.Games.Order;
         }
 
         public async Task<KoreGame> GetGameAsync(KoreAuthToken token, string gameUrl, string returnUrl)
