@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -37,10 +38,13 @@ namespace Aris.ServerTest.Services
 
             await CheckResponseForErrorAsync(response);
 
-            var data = response.Content.ReadAsStringAsync();
+            var data = await response.Content.ReadAsStringAsync();
             var games = JsonConvert.DeserializeObject<KoreGames>(data);
 
-            return games.Games;
+            return games.Games.OrderBy(c => c.Category).ThenBy(p => p.Platform).ThenBy(n => n.Name).ToList();
+                                 
+
+            //return games.Games.Order;
         }
 
         public async Task<KoreGame> GetGameAsync(KoreAuthToken token, string gameUrl, string returnUrl)

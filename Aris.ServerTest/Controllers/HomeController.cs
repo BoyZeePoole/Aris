@@ -23,10 +23,18 @@ namespace Aris.ServerTest.Controllers
             var viewModel = new ViewModels.GamesListViewModel();
             var games = await _gameService.GetGamesAsync(GetAuthToken(), returnUrl);
 
-            viewModel.Games = games;
+            if(catFilter != null)
+            {
+                viewModel.Games = games.Where(x => x.Category == catFilter);
+            }
+            else
+            {
+                viewModel.Games = games;
+            }
 
             return View(viewModel);
         }
+
 
         public async Task<IActionResult> Details(string game, string returnUrl)
         {
